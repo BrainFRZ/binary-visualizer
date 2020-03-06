@@ -1,36 +1,41 @@
 import React, { useState, useEffect } from 'react';
+import { getProjectItems } from 'store/selectors';
 import Context from './Context';
 import Line from './Line';
-
-const hardcodedCode = { code: ["Elves eat cookies while", "making toy codes and", "singing PL songs!"] };
+import { useSelector } from 'react-redux';
 
 export default function CodeViewer() {
-  const { code } = hardcodedCode;
+  const { code } = useSelector(getProjectItems);
   const [gutterWidth, setGutterWidth] = useState('auto');
   const [openedCode, setOpenedCode] = useState({});
 
   useEffect(() => {
-    const openedIR = {};
-    code.forEach((line, lineAddr) => {
-      openedIR[999+lineAddr*4] = line;
+    const openedCode = {};
+    Object.keys(code).forEach(blockAddr => {
+      code[blockAddr].forEach(instr => {
+        openedCode[instr.addr] = instr;
+      });
     });
-    setOpenedCode(openedIR);
+    setOpenedCode(openedCode);
   }, [code]);
 
-  const codeElem = Object.keys(openedCode).map(lineAddr => {
+  const codeElem = Object.keys(openedCode).map(instr => {
+    instr = openedCode[instr];
     return (<Line
-      key={ `codeline${lineAddr}` }
-      lineAddr={ lineAddr }
+      key={ `codeline${instr.addr}` }
+      lineAddr={ instr.addr }
+      code={ instr.code }
+      funcAddr={ instr.procedure }
+      blockAddr={ instr.block }
     />);
   });
 
   return (
     <Context.Provider
       value={{
-        code: openedCode,
         gutterWidth,
         setGutterWidth
       }}>
-      <div style={{ whiteSpace: 'pre' }}>{ codeElem }</div>
+      <div style={{ whiteSpace: 'pre', overflow: 'auto' }}>{ codeElem }</div>
     </Context.Provider>);
 }

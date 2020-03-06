@@ -7,8 +7,8 @@ export default function ProjectLayout() {
     <SplitPane vertical>
       <Pane width='64%' overflow='auto'>
         <SplitPane horizontal>
-          <Pane height='48%'><BlockGraph /></Pane>
-          <Pane><FunctionGraph /></Pane>
+          <Pane height='48%'><FunctionGraph /></Pane>
+          <Pane><BlockGraph /></Pane>
         </SplitPane>
       </Pane>
       <Pane><CodeViewer /></Pane>

@@ -4,8 +4,8 @@ import { withTheme } from '@material-ui/styles';
 import Context from './Context';
 
 export default function Line(props) {
-  const { lineAddr } = props;
-  const { code, gutterWidth, setGutterWidth } = useContext(Context);
+  const { lineAddr, code, funcAddr, blockAddr } = props;
+  const { gutterWidth, setGutterWidth } = useContext(Context);
 
   return (
     <div key={ `line${lineAddr}` }>
@@ -19,9 +19,9 @@ export default function Line(props) {
         style={{
           display: 'inline-block',
           verticalAlign: 'bottom',
-          fontFamily: 'Roboto Mono, "Courier New", Courier, monospace'
+          fontFamily: '"Roboto Mono", "Courier New", Courier, monospace'
         }}>
-        { code[lineAddr] }
+        { code[lineAddr].code }
       </Typography>
     </div>);
 }
@@ -51,7 +51,7 @@ function Gutter(props) {
         variant='body2'
         ref={ set }
         color='textSecondary'>
-        { parseInt(lineAddr) + 1 }
+        { lineAddr }
       </Typography>
     </div>);
 }
