@@ -1,7 +1,5 @@
 import json, sys, os
 
-MNEMONIC_WIDTH = 8
-
 def getProjID():
     files = os.walk("input", topdown=True).__next__()[2]
     return files[0] if len(files) != 0 else ''
@@ -11,36 +9,31 @@ def buildCodeLines(procedures):
     def buildLine(procAddr, blockAddr, instr):
         if (len(instr["label"]) != 0):
             return {"addr": instr["instruction"]["address"],
-                    "code": "{}:".format(instr["label"][0]),
+                    "label": instr["label"][0],
                     "procedure": procAddr,
                     "block": blockAddr}
         instr = instr["instruction"]
-        instrCode = ""
-        if (len(instr["op"]) == 0):
-            instrCode = instr["mnemonic"]
-        else:
-            instrCode = ("{0:" + str(MNEMONIC_WIDTH) + "}{1}")  \
-                            .format(instr["mnemonic"], ", ".join(instr["op"]))
         return {"addr": instr["address"],
-                "code": instrCode,
+                "mnemonic": instr["mnemonic"],
+                "args": instr["op"],
                 "procedure": procAddr,
                 "block": blockAddr}
 
     code = { }
-    for p in procedures:
+    for pName in procedures:
+        p = procedures[pName];
         pAddr = p["address"]
-        for block in p["blocks"]:
-            bAddr = block["address"]
+        for bAddr in p["blocks"]:
             call = lambda instr : buildLine(pAddr, bAddr, instr)
-            code[bAddr] = list(map(call, block["instructions"]))
+            code[bAddr] = list(map(call, p["blocks"][bAddr]["instructions"]))
     return code
 
 def buildGraphs(procNames, procs):
     def buildProcsGraph(names, graphs):
-        graph = graphs["procs"] = { }
+        graphs["procs"] = { "graph": { } }
         for name in names:
-            graph[name] = { }
-        return graph
+            graphs["procs"]["graph"][name] = { }
+        return graphs
 
     graphs = { "graphs": { } }
     graphs = buildProcsGraph(procNames, graphs["graphs"])
