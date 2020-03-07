@@ -11,6 +11,6 @@ export default function ProjectLayout() {
           <Pane><BlockGraph /></Pane>
         </SplitPane>
       </Pane>
-      <Pane><CodeViewer /></Pane>
+      <Pane style={{backgroundColor: '#F5EABA'}}><CodeViewer /></Pane>
     </SplitPane>);
 }

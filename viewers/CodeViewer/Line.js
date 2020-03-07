@@ -2,21 +2,15 @@ import React, { useContext } from 'react';
 import { Typography } from '@material-ui/core';
 import { withTheme } from '@material-ui/styles';
 import Context from './Context';
+import { LabelLine, InstrLine } from './LineTypes';
 
 export default function Line(props) {
   const { lineAddr, label, mnemonic, args, funcAddr, blockAddr, isLastLine } = props;
 //  const { gutterWidth, setGutterWidth } = useContext(Context);
 
-  let line = ''
   if (label)
-    line = `${label}:`;
-  else
-    line = `${mnemonic} ${args.join(', ')}`;
-
-  return (
-    <div key={ `line${lineAddr}` }>
-      {line}
-    </div>);  
+    return (<LabelLine key={`line${lineAddr}`} label={`${label}`} />);
+  return (<InstrLine key={`line${lineAddr}`} addr={lineAddr} mnemonic={mnemonic} args={args} />);
 }
 
 /*
