@@ -57,10 +57,10 @@ def main():
 
     output = {"userId": consoleArgs[1],
               "name": consoleArgs[3] if len(consoleArgs) >= 4 else "unnamed",
-              "code": "Filler pending framework update",
               "status": "done",
               "analysis": consoleArgs[2],
-              "items": projData}
+              "analysisInput": "Filler pending framework update",
+              "analysisOutput": projData}
 
     with open("output/{}".format(projID), 'w+') as output_file:
         json.dump(output, output_file)

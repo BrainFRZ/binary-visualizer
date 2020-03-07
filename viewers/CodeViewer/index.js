@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { getProjectItems } from 'store/selectors';
+import { getProjectAnalysisOutput } from 'store/selectors';
 import Context from './Context';
 import Line from './Line';
 import { useSelector } from 'react-redux';
 
 export default function CodeViewer() {
-  const { code } = useSelector(getProjectItems);
+  const { code } = useSelector(getProjectAnalysisOutput);
   const [gutterWidth, setGutterWidth] = useState('auto');
   const [openedCode, setOpenedCode] = useState({});
 
@@ -19,14 +19,18 @@ export default function CodeViewer() {
     setOpenedCode(openedCode);
   }, [code]);
 
-  const codeElem = Object.keys(openedCode).map(instr => {
+  const lastIndex = Object.keys(openedCode).length-1;
+  const codeElem = Object.keys(openedCode).map((instr, index) => {
     instr = openedCode[instr];
     return (<Line
       key={ `codeline${instr.addr}` }
       lineAddr={ instr.addr }
-      code={ instr.code }
+      label={ instr.label }
+      mnemonic={ instr.mnemonic }
+      args={ instr.args }
       funcAddr={ instr.procedure }
       blockAddr={ instr.block }
+      isLastLine={ index === lastIndex }
     />);
   });
 

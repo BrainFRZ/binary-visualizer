@@ -4,28 +4,22 @@ import { withTheme } from '@material-ui/styles';
 import Context from './Context';
 
 export default function Line(props) {
-  const { lineAddr, code, funcAddr, blockAddr } = props;
-  const { gutterWidth, setGutterWidth } = useContext(Context);
+  const { lineAddr, label, mnemonic, args, funcAddr, blockAddr, isLastLine } = props;
+//  const { gutterWidth, setGutterWidth } = useContext(Context);
+
+  let line = ''
+  if (label)
+    line = `${label}:`;
+  else
+    line = `${mnemonic} ${args.join(', ')}`;
 
   return (
     <div key={ `line${lineAddr}` }>
-      <Gutter
-        lineAddr={ lineAddr }
-        lastLine={ lineAddr === Object.keys(code).length - 1 }
-        width={ gutterWidth }
-        onSet={ setGutterWidth } />
-      <Typography
-        variant='body2'
-        style={{
-          display: 'inline-block',
-          verticalAlign: 'bottom',
-          fontFamily: '"Roboto Mono", "Courier New", Courier, monospace'
-        }}>
-        { code[lineAddr].code }
-      </Typography>
-    </div>);
+      {line}
+    </div>);  
 }
 
+/*
 function Gutter(props) {
   const { lineAddr, lastLine, width, theme, onSet } = props;
 
@@ -33,7 +27,7 @@ function Gutter(props) {
     if (lastLine) {
       const bounds = ref.getBoundingClientRect();
       const currWidth = bounds.width;
-      if (width !== currWidth) setGutterWidth(currWidth);
+      if (width !== currWidth) onSet(currWidth);
     }
   }
 
@@ -56,3 +50,4 @@ function Gutter(props) {
     </div>);
 }
 Gutter = withTheme(Gutter);
+*/
