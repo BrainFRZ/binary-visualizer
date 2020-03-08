@@ -30,12 +30,12 @@ def buildCodeLines(procedures):
 
 def buildGraphs(procNames, procs):
     def buildProcsGraph(names, graphs):
-        graphs["procs"] = { "graph": { } }
+        graphs["funcs"] = { "graph": { } }
         for name in names:
-            graphs["procs"]["graph"][name] = { }
+            graphs["funcs"]["graph"][name] = { }
         return graphs
 
-    graphs = { "graphs": { } }
+    graphs = { "graphs": { }, "start": [] }
     graphs = buildProcsGraph(procNames, graphs["graphs"])
 #    for proc in procs:
 #        graphs["graphs"][proc] = buildBlockGraph(proc)

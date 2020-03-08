@@ -6,11 +6,10 @@ export default function ProjectLayout() {
   return (
     <SplitPane vertical>
       <Pane width='64%' overflow='auto'>
-        <SplitPane horizontal>
-          <Pane height='48%'><FunctionGraph /></Pane>
-          <Pane><BlockGraph /></Pane>
-        </SplitPane>
+        <FunctionGraph />
       </Pane>
-      <Pane style={{backgroundColor: '#F5EABA'}}><CodeViewer /></Pane>
+      <Pane style={{backgroundColor: '#F5EABA'}}>
+        <CodeViewer />
+      </Pane>
     </SplitPane>);
 }
