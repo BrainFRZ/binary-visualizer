@@ -8,7 +8,7 @@ export default function ProjectLayout() {
       <Pane width='64%' overflow='auto'>
         <FunctionGraph />
       </Pane>
-      <Pane style={{backgroundColor: '#F5EABA'}}>
+      <Pane>
         <CodeViewer />
       </Pane>
     </SplitPane>);

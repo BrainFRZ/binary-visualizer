@@ -49,8 +49,14 @@ def buildGraphs(funcNames, funcs):
     graphs["funcs"] = buildFuncsGraph()
     for f in funcs:
         graphs[f] = buildBlocksGraph(f)
-    graphs["states"] = {"graph": {}, "start": []}
+    graphs["blocks"] = {"graph": {}, "start": []}
     return graphs
+
+def buildFuncLookup(funcs):
+    lookup = {}
+    for fName in funcs:
+        lookup[funcs[fName]["address"]] = fName
+    return lookup
 
 def main():
     projID = getProjID()
@@ -63,8 +69,10 @@ def main():
     with open("input/{}".format(projID)) as file:
         data = json.load(file)
     projData["code"] = buildCodeLines(data["procedures"])
-    projData["graphs"] = buildGraphs(data["procedure-names"], data["procedures"])
     projData["funcs"] = data["procedure-names"]
+    projData["funcLookup"] = buildFuncLookup(data["procedures"])
+    projData["graphs"] = buildGraphs(data["procedure-names"], data["procedures"])
+
 
     output = {"userId": consoleArgs[1],
               "name": consoleArgs[3] if len(consoleArgs) >= 4 else "unnamed",

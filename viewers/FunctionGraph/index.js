@@ -2,12 +2,13 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Pane, SplitPane } from 'library/base';
 import { Graph } from 'library/connected';
-import { getMainGraphId, getSubGraphId } from 'store/selectors';
+import { getMainGraphId } from 'store/selectors';
+import { getBlocksGraphId } from 'fext/store/selectors';
 import GraphLabel from './GraphLabel';
 
 export default function FunctionGraph() {
   const mainGraphId = useSelector(getMainGraphId);
-  const subGraphId = useSelector(getSubGraphId);
+  const blocksGraphId = useSelector(getBlocksGraphId);
 
   return  (
     <SplitPane horizontal>
@@ -16,8 +17,8 @@ export default function FunctionGraph() {
         <Graph graphId={ mainGraphId } config={ mainConfig } />
       </Pane>
       <Pane height='50%'>
-        <GraphLabel graphId={ subGraphId } />
-        <Graph graphId={ subGraphId } config={ mainConfig } />
+        <GraphLabel graphId={ blocksGraphId } />
+        <Graph graphId={ blocksGraphId } config={ mainConfig } />
       </Pane>
     </SplitPane>);
 }
@@ -29,10 +30,11 @@ const mainConfig = {
         'background-color': '#0016b5', // dark blue
         'label': 'data(label)',
         'text-valign': 'center',
-        'height': '42px',
+        'shape': 'rectangle',
+        'height': '25px',
         'width': calcWidth(),
         'text-wrap': 'wrap',
-        'font-family': 'Roboto Mono',
+        'font-family': 'Courier New',
         'color': '#FFFFFF', // white
         'border-width': '1px',
         'border-color': '#000000',
@@ -64,6 +66,6 @@ function getStyle(prop, defaultStyle) {
 function calcWidth() {
   return element => {
     const label = element.data('label');
-    return label.length*14;
+    return label.length*10;
   }
 }
