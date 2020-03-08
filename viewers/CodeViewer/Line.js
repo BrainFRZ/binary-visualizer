@@ -7,19 +7,12 @@ import { LabelLine, InstrLine } from './LineTypes';
 export default function Line(props) {
   const { lineAddr, label, mnemonic, args, funcAddr, blockAddr, isLastLine } = props;
   const { gutterWidth, setGutterWidth } = useContext(Context);
+  let line;
+  if (label)
+    line = <LabelLine key={`line${lineAddr}`} style={{display: 'inline-block'}} label={`${label}`} />;
+  else
+    line = <InstrLine style={{display: 'inline-block'}} key={`line${lineAddr}`} addr={lineAddr} mnemonic={mnemonic} args={args} />
 
-  if (label) {
-    return (
-      <div key={`line${lineAddr}div`}>
-        <Gutter
-            lineAddr={ lineAddr }
-            lastLine={ isLastLine }
-            width={ gutterWidth }
-            onSet={ setGutterWidth } />
-          <LabelLine key={`line${lineAddr}`} style={{display: 'inline-block'}} label={`${label}`} />
-      </div>
-    );
-  }
   return (
     <div key={`line${lineAddr}div`}>
       <Gutter
@@ -27,7 +20,7 @@ export default function Line(props) {
         lastLine={ isLastLine }
         width={ gutterWidth }
         onSet={ setGutterWidth } />
-      <InstrLine style={{display: 'inline-block'}} key={`line${lineAddr}`} addr={lineAddr} mnemonic={mnemonic} args={args} />
+      { line }
     </div>
   );
 }

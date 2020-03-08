@@ -2,11 +2,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Pane, SplitPane } from 'library/base';
 import { Graph } from 'library/connected';
-import { getMainGraphId } from 'store/selectors';
+import { getMainGraphId, getSubGraphId } from 'store/selectors';
 import GraphLabel from './GraphLabel';
 
 export default function FunctionGraph() {
   const mainGraphId = useSelector(getMainGraphId);
+  const subGraphId = useSelector(getSubGraphId);
 
   return  (
     <SplitPane horizontal>
@@ -15,8 +16,8 @@ export default function FunctionGraph() {
         <Graph graphId={ mainGraphId } config={ mainConfig } />
       </Pane>
       <Pane height='50%'>
-        <GraphLabel graphId='Blocks Graph' />
-        <div>Graph of selected function's blocks goes here</div>
+        <GraphLabel graphId={ subGraphId } />
+        <Graph graphId={ subGraphId } config={ mainConfig } />
       </Pane>
     </SplitPane>);
 }

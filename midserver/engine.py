@@ -49,6 +49,7 @@ def buildGraphs(funcNames, funcs):
     graphs["funcs"] = buildFuncsGraph()
     for f in funcs:
         graphs[f] = buildBlocksGraph(f)
+    graphs["states"] = {"graph": {}, "start": []}
     return graphs
 
 def main():
@@ -63,6 +64,7 @@ def main():
         data = json.load(file)
     projData["code"] = buildCodeLines(data["procedures"])
     projData["graphs"] = buildGraphs(data["procedure-names"], data["procedures"])
+    projData["funcs"] = data["procedure-names"]
 
     output = {"userId": consoleArgs[1],
               "name": consoleArgs[3] if len(consoleArgs) >= 4 else "unnamed",
