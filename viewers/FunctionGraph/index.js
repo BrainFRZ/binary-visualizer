@@ -30,8 +30,7 @@ const mainConfig = {
         'background-color': '#0016b5', // dark blue
         'label': 'data(label)',
         'text-valign': 'center',
-        'shape': 'rectangle',
-        'height': '25px',
+        'height': '45px',
         'width': calcWidth(),
         'text-wrap': 'wrap',
         'font-family': 'Courier New',
@@ -66,6 +65,6 @@ function getStyle(prop, defaultStyle) {
 function calcWidth() {
   return element => {
     const label = element.data('label');
-    return label.length*10;
+    return label.length*10+5;
   }
 }
