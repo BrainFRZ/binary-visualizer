@@ -40,8 +40,11 @@ def buildGraphs(funcNames, funcs):
         for bAddr in f["blocks"]:
             graph["graph"][bAddr] = {}
             for link in f["blocks"][bAddr]["links"]:
-                addr = re.search("\d+", link)
-                if addr != None:
+                l = re.match(r'\((.+)\s', link).group(1)
+                addr = re.match(r'\d+', l)
+                if addr == None:
+                    graph["graph"][bAddr][l] = {"style": {"line-style": "dashed"}}
+                else:
                     graph["graph"][bAddr][addr.group(0)] = {}
         return graph
 
