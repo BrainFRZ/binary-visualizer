@@ -40,6 +40,6 @@ export default function CodeViewer() {
         gutterWidth,
         setGutterWidth
       }}>
-      <div style={{ whiteSpace: 'pre', overflow: 'auto' }}>{ codeElem }</div>
+      <div style={{ whiteSpace: 'pre', overflow: 'auto', backgroundColor: '#F5EABA' }}>{ codeElem }</div>
     </Context.Provider>);
 }
