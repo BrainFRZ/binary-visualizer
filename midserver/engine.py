@@ -1,4 +1,4 @@
-import json, sys, os
+import json, sys, os, re
 
 def getProjID():
     files = os.walk("input", topdown=True).__next__()[2]
@@ -28,17 +28,27 @@ def buildCodeLines(procedures):
             code[bAddr] = list(map(call, p["blocks"][bAddr]["instructions"]))
     return code
 
-def buildGraphs(procNames, procs):
-    def buildProcsGraph(names, graphs):
-        graphs["funcs"] = {"graph": {}, "start": []}
-        for name in names:
-            graphs["funcs"]["graph"][name] = {}
-        return graphs
+def buildGraphs(funcNames, funcs):
+    def buildFuncsGraph():
+        graph = {"graph": {}, "start": []}
+        for name in funcNames:
+            graph["graph"][name] = {}
+        return graph
+    def buildBlocksGraph(func):
+        f = funcs[func]
+        graph = {"graph": {}, "start": [f["address"]]}
+        for bAddr in f["blocks"]:
+            graph["graph"][bAddr] = {}
+            for link in f["blocks"][bAddr]["links"]:
+                addr = re.search("\d+", link)
+                if addr != None:
+                    graph["graph"][bAddr][addr.group(0)] = {}
+        return graph
 
-    graphs = {"graphs": {}}
-    graphs = buildProcsGraph(procNames, graphs["graphs"])
-#    for proc in procs:
-#        graphs["graphs"][proc] = buildBlockGraph(proc)
+    graphs = {}
+    graphs["funcs"] = buildFuncsGraph()
+    for f in funcs:
+        graphs[f] = buildBlocksGraph(f)
     return graphs
 
 def main():
@@ -53,7 +63,6 @@ def main():
         data = json.load(file)
     projData["code"] = buildCodeLines(data["procedures"])
     projData["graphs"] = buildGraphs(data["procedure-names"], data["procedures"])
-#    projData["data"] = data
 
     output = {"userId": consoleArgs[1],
               "name": consoleArgs[3] if len(consoleArgs) >= 4 else "unnamed",
