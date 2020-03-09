@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Loading } from 'library/base';
 import GraphLabel from './GraphLabel';
-import { Graph } from 'library/connected';
-import { blocksConfig } from './configs/BlocksConfig';
+import LabelStoreGraph from './configs/BlocksConfig';
 
 export default function BlockGraph(props) {
-  const { graphId, config=blocksConfig } = props;
+  const { graphId } = props;
+  const { code } = useSelector(getProjectAnalysisOutput);
+
   return (
     <>
       <GraphLabel graphId={graphId} />
-      <Graph graphId={graphId} config={config} />
+      <LabelStoreGraph graphId={graphId} code={code} />
     </>
   );
 }

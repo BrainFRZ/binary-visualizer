@@ -1,26 +1,21 @@
 import getStyle from './index';
+import mainConfig from './index';
 
-export const blocksConfig = {
+const blocksConfig = (labelStore, code) => ({
   style: [{
       selector: 'node',
       style: {
-        'background-color': '#0016b5', // dark blue
-        'label': 'data(label)',
+        'background-image': getLabel(labelStore),
+        'background-fit': 'contain',
+        'background-color': getBackgroundColor(code),
         'text-valign': 'center',
-        'shape': 'rectangle',
-        'height': '25px',
-        'width': calcLabelWidth(),
-        'text-wrap': 'wrap',
-        'font-family': 'Courier New',
-        'color': '#FFFFFF', // white
-        'border-width': '1px',
-        'border-color': '#000000',
-        'font-weight': 'bold'
+        'shape': 'roundrectangle',
+        'height': getHeight(labelStore),
+        'width': getWidth(labelStore),
       }
     }, {
       selector: 'edge',
       style: {
-        'label': 'data(label)',
         'curve-style': 'bezier',
         'line-color': getStyle('line-color', '#6783F3'), // default dark blue
         'line-style': getStyle('line-style', 'solid'),
@@ -30,11 +25,30 @@ export const blocksConfig = {
     },
   ],
   headless: true
-};
+});
+export default blocksConfig;
 
-function calcLabelWidth() {
+function getLabel(labelStore) {
   return element => {
     const label = element.data('label');
     return label.length*10;
+  }
+}
+function getHeight(labelStore) {
+  return element => {
+    const label = element.data('label');
+    return label.length*10;
+  }
+}
+function getWidth(labelStore) {
+  return element => {
+    const label = element.data('label');
+    return label.length*10;
+  }
+}
+function getBackgroundColor(code) {
+  return element => {
+    const addr = element.data('label');
+    return (addr in code) ? '#F5EABA' : '#0016b5';
   }
 }

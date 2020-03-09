@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Pane, SplitPane } from 'library/base';
 import { Graph } from 'library/connected';
@@ -11,15 +11,25 @@ import BlockGraph from './BlockGraph';
 export default function GraphViewer() {
   const mainGraphId = useSelector(getMainGraphId);
   const blocksGraphId = useSelector(getBlocksGraphId);
+  const { code } = useSelector(getProjectAnalysisOutput);
+  const [processedLabelQueue, setLabelQueueStatus] = useState(true);
+  const [labelStore, updateLabelStore] = useState({});
 
-  return  (
+  const [graph, setGraph] = useState(<Loading status='Building graph'/>);
+  useEffect(() => {
+    if (blocksGraphId !== 'blocks' && code)
+      setGraph(<BlockGraph graphId={ blocksGraphId } labelStore={ labelStore } />)
+  }, [code, blocksGraphId, processedLabelQueue]);
+
+
+  return (
     <SplitPane horizontal>
       <Pane height='50%'>
         <GraphLabel graphId={ mainGraphId } />
         <Graph graphId={ mainGraphId } config={ mainConfig } />
       </Pane>
       <Pane height='50%'>
-        <BlockGraph graphId={ blocksGraphId } />
+        { graph }
       </Pane>
     </SplitPane>);
 }
