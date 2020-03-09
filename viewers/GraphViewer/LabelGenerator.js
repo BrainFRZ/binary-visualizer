@@ -1,0 +1,3 @@
+const labelGenerator = (code, blocks) => {
+
+};
