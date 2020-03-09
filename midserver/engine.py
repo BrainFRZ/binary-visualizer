@@ -44,8 +44,12 @@ def buildGraphs(funcNames, funcs):
                 addr = re.match(r'\d+', l)
                 if addr == None:
                     graph["graph"][bAddr][l] = {"style": {"line-style": "dashed"}}
+                    if l not in graph["graph"]:
+                        graph["graph"][l] = {}
                 else:
                     graph["graph"][bAddr][addr.group(0)] = {}
+                    if addr not in graph["graph"]:
+                        graph["graph"][addr.group(0)] = {}
         return graph
 
     graphs = {}

@@ -85,7 +85,7 @@ function NumSpan(props) {
   const opts = {color: numColor};
   const style = (props.style || useStyles(opts).style);
   let nStr = props.code;
-  if (nStr.length > 6) {
+  if (nStr.length > AUTO_HEX_DIGITS) {
     nStr = numToHex(nStr);
   }
   return (<span className={style}>{nStr}</span>);
