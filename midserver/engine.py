@@ -61,6 +61,19 @@ def buildFuncLookup(funcs):
         lookup[funcs[fName]["address"]] = fName
     return lookup
 
+def buildRefTree(funcs):
+    tree = {"funcs": {}, "blocks": {}}
+    for fName in funcs:
+        func = funcs[fName]
+        tree["funcs"][fName] = list(func["blocks"].keys()) # block addrs
+        for bAddr in func["blocks"]:
+            brefs = []
+            instrs = func["blocks"][bAddr]["instructions"]
+            for i in instrs:
+                brefs.append(i["instruction"]["address"])
+            tree["blocks"][bAddr] = brefs
+    return tree
+
 def main():
     projID = getProjID()
     if projID == '':
@@ -71,10 +84,13 @@ def main():
     data = { }
     with open("input/{}".format(projID)) as file:
         data = json.load(file)
-    projData["code"] = buildCodeLines(data["procedures"])
-    projData["funcs"] = data["procedure-names"]
-    projData["funcLookup"] = buildFuncLookup(data["procedures"])
-    projData["graphs"] = buildGraphs(data["procedure-names"], data["procedures"])
+    funcs = data["procedures"]
+    funcNames = data["procedure-names"]
+    projData["code"] = buildCodeLines(funcs)
+    projData["funcs"] = funcNames
+    projData["funcLookup"] = buildFuncLookup(funcs)
+    projData["graphs"] = buildGraphs(funcNames, funcs)
+    projData["refTree"] = buildRefTree(funcs)
 
 
     output = {"userId": consoleArgs[1],

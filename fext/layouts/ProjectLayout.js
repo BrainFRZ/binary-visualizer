@@ -1,12 +1,12 @@
 import React from 'react';
-import { CodeViewer, FunctionGraph, BlockGraph } from 'viewers';
+import { CodeViewer, GraphViewer } from 'viewers';
 import { Pane, SplitPane } from 'library/base';
 
 export default function ProjectLayout() {
   return (
     <SplitPane vertical>
       <Pane width='64%' overflow='auto'>
-        <FunctionGraph />
+        <GraphViewer />
       </Pane>
       <Pane>
         <CodeViewer />
