@@ -28,7 +28,7 @@ def buildCodeLines(procedures):
             code[bAddr] = list(map(call, p["blocks"][bAddr]["instructions"]))
     return code
 
-def buildGraphs(funcNames, funcs):
+def buildGraphs(funcNames, funcs, refTree, funcLookup):
     def buildFuncsGraph():
         graph = {"graph": {}, "start": []}
         for name in funcNames:
@@ -46,6 +46,10 @@ def buildGraphs(funcNames, funcs):
                     graph["graph"][bAddr][l] = {"style": {"line-style": "dashed"}}
                     if l not in graph["graph"]:
                         graph["graph"][l] = {}
+                elif (addr.group(0) not in refTree["funcs"][func]) and (int(addr.group(0)) in funcLookup.keys()):
+                    label = "ref: {}".format(funcLookup[int(addr.group(0))])
+                    graph["graph"][bAddr][label] = {"style": {"line-style": "dashed"}}
+                    graph["graph"][label] = {}
                 else:
                     graph["graph"][bAddr][addr.group(0)] = {}
                     if addr not in graph["graph"]:
@@ -93,8 +97,8 @@ def main():
     projData["code"] = buildCodeLines(funcs)
     projData["funcs"] = funcNames
     projData["funcLookup"] = buildFuncLookup(funcs)
-    projData["graphs"] = buildGraphs(funcNames, funcs)
     projData["refTree"] = buildRefTree(funcs)
+    projData["graphs"] = buildGraphs(funcNames, funcs, projData["refTree"], projData["funcLookup"])
 
 
     output = {"userId": consoleArgs[1],
