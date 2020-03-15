@@ -1,10 +1,10 @@
 import { createSelector } from 'reselect';
-import { getProjectAnalysisOutput, getMainGraphId, getSelectedNodes } from 'store/selectors';
+import { getProjectAnalysisOutput, getSelectedNodes } from 'store/selectors';
 
 export const getProcsGraphId = createSelector((selectedNodes, analOut) => 'funcs');
 
 export const getBlocksGraphId = createSelector(
-  state => getSelectedNodes(state, getMainGraphId(state)),
+  state => getSelectedNodes(state, getProcsGraphId(state)),
   state => getProjectAnalysisOutput(state),
   (selectedNodes, analOut) => {
     let blocksGraphId = 'blocks';
