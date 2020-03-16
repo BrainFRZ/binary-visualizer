@@ -1,14 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
+import { labelColor, textColor, numColor } from 'globals/palette';
+import { INSTR_MARGIN, INSTR_WIDTH, AUTO_HEX_DIGITS } from 'globals/view';
 
-const INSTR_MARGIN = '0px 0px 0px 40px';
-const INSTR_WIDTH = '80px';
 
-const AUTO_HEX_DIGITS = 6;
-
-const labelColor = '#0016b5'        // Dark blue
-const textColor = '#00a5e7'         // Dark cyan
-const numColor = '#e67800'          // Dark orange
 const useStyles = makeStyles({
   style: props => ({
     fontFamily: '"Roboto Mono", "Courier New", Courier, monospace',
