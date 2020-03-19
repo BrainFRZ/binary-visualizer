@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
-import { labelColor, textColor, numColor } from 'globals/palette';
+import { LABEL_COLOR, TEXT_COLOR, NUM_COLOR } from 'globals/palette';
 import { INSTR_MARGIN, INSTR_WIDTH, AUTO_HEX_DIGITS } from 'globals/view';
 
 
@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     fontFamily: '"Roboto Mono", "Courier New", Courier, monospace',
     fontWeight: 'bold',
     display: 'inline-block',
-    color: (props.color || textColor),
+    color: (props.color || TEXT_COLOR),
     padding: 0,
     margin: 0,
     whitespace: 'pre',
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     fontFamily: '"Roboto Mono", "Courier New", Courier, monospace',
     fontWeight: 'bold',
     display: 'inline-block',
-    color: (props.color || textColor),
+    color: (props.color || TEXT_COLOR),
     padding: 0,
     whitespace: 'pre',
     margin: INSTR_MARGIN,
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 
 // TODO labels will be double-clickable to snap SymTable to this procedure
 export function LabelLine(props) {
-  const style = useStyles({color: labelColor, indent: '0px'}).style;
+  const style = useStyles({color: LABEL_COLOR, indent: '0px'}).style;
   return (<div className={style}>{props.label}:</div>);
 }
 
@@ -52,8 +52,8 @@ export function InstrLine(props) {
 
 const parseArg = (arg, argID, addr, lst=[]) => {
   const groups = arg.match(/\d+|\D+/g); // split arg on digits
-  const textStyle = useStyles({color: textColor}).style;
-  const numStyle = useStyles({color: numColor}).style;
+  const textStyle = useStyles({color: TEXT_COLOR}).style;
+  const numStyle = useStyles({color: NUM_COLOR}).style;
   groups.forEach((group, index) => {
     if (/^\d+$/.test(group))
       lst.push(<NumSpan key={`line${addr}-${argID}-${index}`} style={numStyle} code={group} />);
@@ -64,20 +64,20 @@ const parseArg = (arg, argID, addr, lst=[]) => {
 }
 
 function MnemonicSpan(props) {
-  const opts = {color: textColor};
+  const opts = {color: TEXT_COLOR};
   const style = useStyles(opts).instr;
   return (<span className={style}>{props.code}</span>);
 }
 
 function TextSpan(props) {
-  const opts = {color: textColor};
+  const opts = {color: TEXT_COLOR};
   const style = (props.style || useStyles(opts).style);
   return (<span className={style}>{props.code}</span>);
 }
 
 // TODO Numbers should be double-clickable to toggle between hex and decimal
 function NumSpan(props) {
-  const opts = {color: numColor};
+  const opts = {color: NUM_COLOR};
   const style = (props.style || useStyles(opts).style);
   let nStr = props.code;
   if (nStr.length > AUTO_HEX_DIGITS) {

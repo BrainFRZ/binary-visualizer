@@ -1,14 +1,14 @@
 import React from 'react';
 import GraphLabel from './GraphLabel';
 import { Graph } from 'library/connected';
-import { blocksConfig } from './configs/BlocksConfig';
+import { blocksConfig, htmlLabelConfig } from './configs/index';
 
 export default function BlockGraph(props) {
-  const { graphId, config=blocksConfig } = props;
+  const { graphId, config=blocksConfig, htmlLabels=htmlLabelConfig } = props;
   return (
     <>
       <GraphLabel graphId={graphId} />
-      <Graph graphId={graphId} config={config} />
+      <Graph graphId={graphId} config={config} htmlLabels={htmlLabels} />
     </>
   );
 }

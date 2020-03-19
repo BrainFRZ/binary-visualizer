@@ -3,6 +3,7 @@ import { getProjectAnalysisOutput } from 'store/selectors';
 import Context from './Context';
 import Line from './Line';
 import { useSelector } from 'react-redux';
+import { CODE_BACKGROUND } from 'globals/palette';
 
 export default function CodeViewer() {
   const { code } = useSelector(getProjectAnalysisOutput);
@@ -40,6 +41,6 @@ export default function CodeViewer() {
         gutterWidth,
         setGutterWidth
       }}>
-      <div style={{ whiteSpace: 'pre', overflow: 'auto', backgroundColor: '#F5EABA' }}>{ codeElem }</div>
+      <div style={{ whiteSpace: 'pre', overflow: 'auto', backgroundColor: CODE_BACKGROUND }}>{ codeElem }</div>
     </Context.Provider>);
 }

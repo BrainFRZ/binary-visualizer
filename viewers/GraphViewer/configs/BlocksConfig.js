@@ -1,40 +1,58 @@
 import getStyle from './index';
+import { generateHTMLTag, generateHTMLBlock } from '../LabelGenerator';
+import { inspect } from 'util';
+
+const EDGE_COLOR = '#6783F3'; // Dark cyan
 
 export const blocksConfig = {
   style: [{
       selector: 'node',
       style: {
-        'background-color': '#0016b5', // dark blue
-        'label': 'data(label)',
-        'text-valign': 'center',
+        'background-color': node => getCytoLabel(node).backgroundColor,
+        'height': node => getCytoLabel(node).height,
+        'width': node => getCytoLabel(node).width,
         'shape': 'rectangle',
-        'height': '25px',
-        'width': calcLabelWidth(),
         'text-wrap': 'wrap',
-        'font-family': 'Courier New',
-        'color': '#FFFFFF', // white
         'border-width': '1px',
         'border-color': '#000000',
-        'font-weight': 'bold'
       }
     }, {
       selector: 'edge',
       style: {
         'label': 'data(label)',
         'curve-style': 'bezier',
-        'line-color': getStyle('line-color', '#6783F3'), // default dark blue
+        'line-color': getStyle('line-color', EDGE_COLOR),
         'line-style': getStyle('line-style', 'solid'),
         'target-arrow-shape': 'triangle',
-        'target-arrow-color': getStyle('target-arrow-color', '#6783F3')
+        'target-arrow-color': getStyle('target-arrow-color', EDGE_COLOR)
       }
     },
   ],
   headless: true
 };
 
-function calcLabelWidth() {
-  return element => {
-    const label = element.data('label');
-    return label.length*10;
+export const htmlLabelConfig = ([
+  {
+    query: 'node',
+    valign: 'center',
+    valignBox: 'center',
+    tpl: getHTMLTemplate,
   }
+]);
+
+function getCytoLabel(node) {
+  console.log(node);
+  if (node.data('block') === undefined)
+    return console.log(`GET_LABEL ERROR`);
+  if (node.data('block') === null)
+    return generateHTMLTag(node.data('label'));
+  return generateHTMLBlock(node.data('block'));
+}
+
+function getHTMLTemplate(node) {
+  if (node.block === undefined)
+    return console.log(`GET_LABEL ERROR`);
+  if (node.block === null)
+    return generateHTMLTag(node.label).label;
+  return generateHTMLBlock(node.block).label;
 }
