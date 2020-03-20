@@ -1,8 +1,10 @@
 import getStyle from './index';
 import { generateHTMLTag, generateHTMLBlock } from '../LabelGenerator';
-import { inspect } from 'util';
 
 const EDGE_COLOR = '#6783F3'; // Dark cyan
+
+const getCytoLabel = getLabelFactory(getCytoProp);
+const getHTMLLabel = getLabelFactory(getHTMLProp);
 
 export const blocksConfig = {
   style: [{
@@ -36,23 +38,19 @@ export const htmlLabelConfig = ([
     query: 'node',
     valign: 'center',
     valignBox: 'center',
-    tpl: getHTMLTemplate,
+    tpl: data => getHTMLLabel(data).label,
   }
 ]);
 
-function getCytoLabel(node) {
-  console.log(node);
-  if (node.data('block') === undefined)
-    return console.log(`GET_LABEL ERROR`);
-  if (node.data('block') === null)
-    return generateHTMLTag(node.data('label'));
-  return generateHTMLBlock(node.data('block'));
+function getLabelFactory(propCallback) {
+  return function(dataSrc) {
+    if (propCallback(dataSrc, 'block') === undefined)
+      console.error('GET_LABEL ERROR: node ', propCallback(dataSrc, 'id'));
+    else if (propCallback(dataSrc, 'block') === null)
+      return generateHTMLTag(propCallback(dataSrc, 'label'));
+    else
+      return generateHTMLBlock(propCallback(dataSrc, 'block'));
+  }
 }
-
-function getHTMLTemplate(node) {
-  if (node.block === undefined)
-    return console.log(`GET_LABEL ERROR`);
-  if (node.block === null)
-    return generateHTMLTag(node.label).label;
-  return generateHTMLBlock(node.block).label;
-}
+function getCytoProp(node, prop) { return node.data(prop); }
+function getHTMLProp(data, prop) { return data[prop]; }
